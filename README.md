@@ -8,16 +8,7 @@
 ---
 
 ## About This Project
-This project was developed as part of my **Data Engineering capstone**, aiming to build a **real-world data pipeline** that automates the entire process from **data ingestion to visualization**.
-
-Through this project, I applied key data engineering concepts such as:
-- Workflow orchestration with **Apache Airflow**  
-- Distributed data processing using **Apache Spark**  
-- **Streaming integration** using **Apache Kafka**  
-- **ETL and warehouse design** with the Dim–Fact model  
-- **Docker-based deployment** for consistent and portable environments  
-
-It demonstrates my ability to design **end-to-end pipelines**, integrate **multiple data sources**, and process streaming data in real-time.
+Dự án này được xây dựng với mục tiêu nghiên cứu và kỹ thuật nhằm thiết kế một hệ thống nghiên cứu giao dịch định lượng có cấu trúc, có khả năng mở rộng và có thể kiểm định được. Về mặt nghiên cứu, hệ thống hướng tới việc chuẩn hóa cách tiếp cận tín hiệu giao dịch bằng cách tách biệt rõ ràng giữa dữ liệu thị trường thô, lớp chỉ báo kỹ thuật, lớp điều kiện logic (metric), lớp quyết định (prediction) và lớp xác nhận hiệu suất (backtest/confirmation). Thay vì phụ thuộc vào mô hình học máy khó giải thích, dự án tập trung xây dựng một cơ chế chấm điểm xác định (deterministic scoring) dựa trên trọng số và khái niệm edge, cho phép đánh giá mức độ áp đảo giữa bên mua và bên bán một cách minh bạch. Về mặt kỹ thuật, dự án triển khai một kiến trúc Data Warehouse theo hướng fact-driven với grain được định nghĩa rõ ràng, đảm bảo tính idempotent trong ETL, tách biệt các tầng xử lý dữ liệu để tránh leakage, và cho phép truy vết toàn bộ vòng đời của một tín hiệu từ lúc hình thành đến khi được xác nhận. Hệ thống không chỉ tạo ra tín hiệu giao dịch mà còn khai thác các cấu trúc thị trường lặp lại thông qua khai phá mẫu (FP-Growth), từ đó đánh giá tính bền vững của edge. Tổng thể, đây là một nền tảng nghiên cứu định lượng được thiết kế để ưu tiên tính minh bạch, khả năng mở rộng và kiểm định thực nghiệm, thay vì tối ưu ngắn hạn theo hướng overfitting.
 
 ---
 
