@@ -146,6 +146,50 @@ Supported indicators include RSI, MACD, EMA, ADX, Bollinger Bands, ATR, VWAP dev
 
 This design ensures transparency, avoids hidden transformations, and allows clean separation between raw technical signals and higher-level trading logic.
 
+---
+
+# 6️⃣ Metric Abstraction Layer
+
+The metric layer converts continuous indicator values into structured, configurable trading conditions. Instead of hardcoding strategy rules in application logic, all trading conditions are defined in `dim_metric` and evaluated dynamically into `fact_metric_value`.
+
+Each metric specifies:
+
+- Anchor indicator (`indicator_type_id`)
+- Threshold range (`threshold_start`, `threshold_end`)
+- Direction logic (ABOVE, BELOW, BETWEEN, TREND_UP, CROSS_UP, etc.)
+- Window size and unit
+- Weight
+- Active flag
+
+---
+
+## Purpose
+
+- Separate technical signals from trading logic  
+- Enable configuration-driven strategy design  
+- Allow historical re-evaluation without code changes  
+- Support metric-level experimentation  
+
+---
+
+## Data Flow
+
+fact_indicator → metric evaluation → fact_metric_value
+
+Each metric is evaluated per symbol, interval, and timestamp, producing structured conditions (typically binary or weighted values) that are later aggregated in the prediction engine.
+
+---
+
+## Design Principles
+
+- **Config-Driven Logic** – Strategy rules live in the database, not in code  
+- **Independent Evaluation** – Metrics are computed separately from scoring  
+- **Reproducible** – Historical metric states remain traceable  
+- **Extensible** – New trading conditions can be added without refactoring  
+
+---
+
+This abstraction layer provides the structural foundation for deterministic scoring and controlled strategy experimentation.
 
 ## Key Features
 
