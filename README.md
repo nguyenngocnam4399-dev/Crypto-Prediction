@@ -85,9 +85,10 @@ This layer supports experimental research and structural edge validation.
 
 ---
 
-## Data Warehouse Schema
+## 4️⃣ Data Warehouse Design
+Data Warehouse Schema
 ![Warehouse ERD](images/warehouse_schema.png)
-
+The warehouse follows a fact-driven design where market data, indicators, metrics, predictions, and confirmation results are stored as separate fact tables with clearly defined grain. Dimension tables provide normalization for symbols, intervals, indicators, and metrics.
 ---
 
 ## Key Features
