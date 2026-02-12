@@ -17,7 +17,7 @@ This project implements an end-to-end quantitative trading research pipeline bui
 
 ---
 
-3️⃣ System Architecture
+3️⃣ ## System Architecture
 
 ![System Architecture](images/System_Architecture.png)
 
