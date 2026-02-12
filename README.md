@@ -17,9 +17,72 @@ This project implements an end-to-end quantitative trading research pipeline bui
 
 ---
 
-## System Architecture
+3️⃣ System Architecture
 
 ![System Architecture](images/System_Architecture.png)
+
+The system follows a layered architecture that clearly separates data ingestion, transformation, signal generation, validation, and analytics. Each layer has a well-defined responsibility to ensure scalability, traceability, and experimental control.
+
+🔹 1. Data Ingestion Layer
+
+Real-time crypto market data is streamed via Kafka.
+
+Spark Streaming processes incoming OHLCV data.
+
+Cleaned data is stored in fact_kline within the Data Warehouse.
+
+This layer ensures immutable, time-series market truth.
+
+🔹 2. Indicator Computation Layer
+
+Atomic technical indicators (RSI, MACD, EMA, ADX, BB, VWAP, etc.) are computed using Spark.
+
+Each indicator is stored independently in fact_indicator.
+
+Indicators are partitioned by symbol and interval to maintain clear grain definition.
+
+This guarantees transparency and recomputability.
+
+🔹 3. Metric Abstraction Layer
+
+Indicators are transformed into logical trading conditions via configurable metrics (dim_metric).
+
+Metrics are evaluated and stored in fact_metric_value.
+
+Logic includes threshold checks, trend direction, cross detection, and volatility filters.
+
+This enables strategy tuning without code modification.
+
+🔹 4. Prediction Engine
+
+BUY and SELL scores are computed independently using weighted metrics.
+
+Edge and confidence are calculated to measure directional dominance.
+
+Signals are stored in fact_prediction.
+
+This layer remains deterministic and fully explainable.
+
+🔹 5. Backtesting & Confirmation Engine
+
+Predictions are evaluated using adaptive TP/SL logic within a future lookahead window.
+
+Results are stored in fact_prediction_result.
+
+Confirmation is separated from prediction to avoid leakage.
+
+This ensures realistic performance validation.
+
+🔹 6. Analytics & Pattern Mining
+
+Performance metrics (equity curve, rolling stability, expectancy) are derived from warehouse facts.
+
+FP-Growth mining extracts recurring structural win patterns.
+
+Flask API exposes analytics endpoints for visualization.
+
+This layer supports experimental research and structural edge validation.
+
 
 ---
 
