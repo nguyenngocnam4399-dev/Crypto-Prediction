@@ -123,6 +123,30 @@ The warehouse follows a fact-driven design where market data, indicators, metric
 
 ---
 
+# 5️⃣ Indicator Engineering
+
+The indicator layer transforms raw market data into atomic, recomputable technical signals. Each indicator is calculated independently using Spark and stored in `fact_indicator` with a clearly defined grain:
+
+(symbol_id, interval_id, indicator_type, timestamp)
+
+Supported indicators include RSI, MACD, EMA, ADX, Bollinger Bands, ATR, VWAP deviation, and volume-based metrics.
+
+---
+
+## Design Principles
+
+- **Atomic Storage** – Each row represents a single indicator value at a single timestamp.  
+- **No Composite Features** – Indicators are not mixed or pre-aggregated.  
+- **Recomputable** – All indicators can be regenerated from `fact_kline`.  
+- **Window-Based Computation** – Rolling and exponential calculations use Spark window functions.  
+- **Partitioned Processing** – Computation is distributed by symbol and interval for scalability.  
+- **Idempotent Writes** – Unique constraints prevent duplicate calculations.
+
+---
+
+This design ensures transparency, avoids hidden transformations, and allows clean separation between raw technical signals and higher-level trading logic.
+
+
 ## Key Features
 
 | Category | Description |
