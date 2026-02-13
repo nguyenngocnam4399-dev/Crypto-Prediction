@@ -58,7 +58,7 @@ The system transforms raw market data into structured trading intelligence while
 
 ![System Architecture](images/System_Architecture.png)
 
-The system follows a layered architecture separating ingestion, transformation, signal modeling, orchestration, validation, and analytics to ensure scalability, reproducibility, and controlled experimentation.
+The system follows a layered architecture separating ingestion, transformation, signal modeling, orchestration, validation, and analytics.
 
 ---
 
@@ -68,73 +68,60 @@ The system follows a layered architecture separating ingestion, transformation, 
 - Spark Streaming processes and normalizes records  
 - Clean data stored in `fact_kline`  
 
-Establishes immutable time-series market truth.
-
 ---
 
 ## 2. Indicator Computation
 
-- Atomic indicators (RSI, MACD, EMA, ADX, BB, VWAP, ATR, etc.) computed via Spark  
+- Atomic indicators computed via Spark  
 - Stored independently in `fact_indicator`  
 - Partitioned by symbol and interval  
-
-Ensures transparency and recomputability.
 
 ---
 
 ## 3. Metric Abstraction
 
-- Logical trading conditions defined in `dim_metric`  
-- Evaluated results stored in `fact_metric_value`  
-- Supports threshold, trend, cross, and volatility logic  
-
-Enables configuration-driven strategy design.
+- Trading conditions defined in `dim_metric`  
+- Evaluated into `fact_metric_value`  
+- Threshold, trend, cross, volatility logic  
 
 ---
 
 ## 4. Prediction Engine
 
-- Independent BUY and SELL scoring  
+- Independent BUY / SELL scoring  
 - Edge and confidence calculation  
-- Results stored in `fact_prediction`  
-
-Deterministic, explainable, and auditable.
+- Stored in `fact_prediction`  
 
 ---
 
 ## 5. Backtesting & Confirmation
 
-- Adaptive TP/SL within controlled lookahead window  
-- Results written to `fact_prediction_result`  
-- Strict separation from prediction layer  
-
-Prevents leakage and ensures realistic evaluation.
+- Adaptive TP/SL within controlled lookahead  
+- Stored in `fact_prediction_result`  
+- Strict leakage prevention  
 
 ---
 
 ## 6. Orchestration Layer (Apache Airflow)
 
-The entire workflow is coordinated using **Apache Airflow DAGs**.
+The entire workflow is coordinated using **Apache Airflow DAGs** running in a Linux environment.
 
-- Dependency-controlled execution of Spark jobs  
-- Scheduled metric computation, prediction, and confirmation  
-- Modular DAG structure per pipeline stage  
+- Dependency-controlled Spark job execution  
+- Scheduled metric, prediction, and confirmation tasks  
 - Retry and failure handling  
-- Containerized deployment (Docker Compose)  
-- CeleryExecutor for distributed task execution  
+- Modular DAG structure  
+- CeleryExecutor for distributed execution  
 
-Airflow ensures reproducible, production-ready orchestration across ingestion, transformation, scoring, validation, and analytics layers.
+Airflow ensures reproducible, production-ready orchestration across all pipeline layers.
 
 ---
 
 ## 7. Analytics & Pattern Mining
 
-- Equity curve, rolling stability, expectancy metrics  
+- Equity curve and expectancy metrics  
 - Regime-based performance analysis  
-- FP-Growth mining of structural win patterns  
-- Flask API for visualization  
-
-Supports systematic edge validation.
+- FP-Growth structural mining  
+- Flask API for analytics endpoints  
 
 ---
 
@@ -142,67 +129,50 @@ Supports systematic edge validation.
 
 ![Warehouse ERD](images/warehouse_schema.png)
 
-The warehouse follows a fact-driven layered model. Market data, indicators, metrics, predictions, and confirmation results are stored in separate fact tables with explicitly defined grain to ensure traceability and reproducibility.
+Fact-driven layered model with explicit grain definition.
 
 ## Core Dimensions
 
-- `dim_symbol` – tradable assets  
-- `dim_interval` – timeframe registry  
-- `dim_indicator_type` – atomic indicator definitions  
-- `dim_metric` – configurable trading logic  
+- `dim_symbol`
+- `dim_interval`
+- `dim_indicator_type`
+- `dim_metric`
 
 ## Fact Layers
 
 | Table                    | Grain                                      | Role |
 |--------------------------|--------------------------------------------|------|
-| `fact_kline`             | (symbol, interval, close_time)             | Market truth |
+| `fact_kline`             | (symbol, interval, close_time)             | Market data |
 | `fact_indicator`         | (symbol, interval, indicator, timestamp)   | Atomic signals |
 | `fact_metric_value`      | (symbol, interval, metric, calculating_at) | Logical conditions |
 | `fact_prediction`        | (symbol, interval, predicting_at)          | Trading hypothesis |
 | `fact_prediction_result` | (prediction_id)                            | Realized outcome |
 
-### Design Principles
-
-- Explicit grain definition  
-- Idempotent ETL  
-- Layered separation of concerns  
-- No signal-result coupling  
-- Fully traceable signal lifecycle  
-
 ---
 
 # 5️⃣ Indicator Engineering
 
-Indicators transform raw market data into atomic, recomputable technical states stored in:
+Indicators stored at atomic grain:
 
 (symbol_id, interval_id, indicator_type, timestamp)
 
-Supported indicators include RSI, MACD, EMA, ADX, Bollinger Bands, ATR, VWAP deviation, and volume-based metrics.
-
-### Principles
-
-- Atomic storage  
-- No composite pre-aggregation  
 - Spark window-based computation  
 - Partitioned distributed processing  
-- Fully recomputable from `fact_kline`  
+- Fully recomputable from raw kline  
 
 ---
 
 # 6️⃣ Metric Abstraction Layer
 
-Metrics convert continuous indicator values into structured trading conditions defined in `dim_metric`.
-
-Each metric specifies:
+Config-driven trading logic defined in database.
 
 - Anchor indicator  
 - Threshold range  
-- Direction logic  
-- Window configuration  
+- Direction rule  
+- Window size  
 - Weight  
-- Active status  
 
-Evaluated results are stored in `fact_metric_value`.
+Evaluated into `fact_metric_value`.
 
 ---
 
@@ -214,37 +184,27 @@ sell_score = Σ(weighted SELL metrics)
 edge = |buy_score − sell_score|  
 confidence = max(score) / MAX_SCORE  
 
-Decision logic includes dominance thresholding, conflict detection, and edge gating. Results are stored in `fact_prediction`.
+Stored in `fact_prediction`.
 
 ---
 
 # 8️⃣ Backtesting & Confirmation Framework
 
-Predictions are validated independently using adaptive TP/SL within a controlled lookahead window.
-
-Results stored in `fact_prediction_result`.
-
-Principles:
-- Leakage prevention  
-- Controlled lookahead  
-- Edge-scaled risk  
+- Controlled lookahead window  
+- Adaptive TP/SL  
 - Idempotent result writing  
+- Strict leakage prevention  
 
 ---
 
 # 9️⃣ Analytics & Performance Evaluation
 
-Performance evaluation is fully warehouse-driven.
-
-Core metrics:
 - Win Rate  
-- Average PnL  
 - Expectancy  
 - Rolling stability  
 - Equity curve  
 - Drawdown  
-
-FP-Growth mining extracts frequent structural conditions, association rules, confidence, and lift to validate sustained edge.
+- FP-Growth structural validation  
 
 ---
 
@@ -253,58 +213,84 @@ FP-Growth mining extracts frequent structural conditions, association rules, con
 ## Tech Stack
 
 - Python  
-- PySpark (batch & streaming)  
+- PySpark  
 - Apache Kafka  
 - Apache Airflow (CeleryExecutor)  
 - Spark ML (FPGrowth)  
 - MySQL 8  
 - Flask  
-- NumPy / Pandas / Scikit-learn  
+- NumPy / Pandas  
+
+## Deployment Environment
+
+The system is deployed and executed on a **Linux-based environment** with:
+
+- Apache Kafka running as service  
+- Apache Spark cluster  
+- Apache Airflow scheduler + workers  
+- MySQL database server  
+- Flask API service  
+
+Services are configured and managed directly at the OS level without containerization.
+
+---
 
 ## Engineering Practices
 
 - Layered architecture  
-- Fact-driven warehouse modeling  
 - Explicit grain control  
-- Idempotent ETL & anti-join writes  
+- Fact-driven warehouse modeling  
+- Idempotent ETL  
 - UTC normalization  
-- Window-based distributed computation  
+- Distributed Spark computation  
 - Config-driven strategy logic  
 - Strict prediction/confirmation separation  
 - DAG-based workflow orchestration  
-- Containerized deployment  
+- Linux service-level deployment  
 
 ---
 
-# 🧠 Skills Demonstrated
+# 📂 Project Structure
 
-## Data Engineering
-- End-to-end streaming + batch pipeline design  
-- Apache Airflow DAG orchestration  
-- Distributed Spark computation  
-- Fact/dimension warehouse modeling  
-- Idempotent ETL architecture  
-
-## Quantitative Modeling
-- Deterministic weighted scoring  
-- Edge-based signal separation  
-- Conflict detection logic  
-- Adaptive risk modeling  
-- Lookahead leakage prevention  
-
-## Research & Validation
-- Expectancy and rolling stability analysis  
-- Equity curve and drawdown evaluation  
-- Structural edge mining with FP-Growth  
-- Fully reproducible warehouse-driven experimentation  
-
----
-
-# 📈 Value Generated
-
-- Converts raw market data into structured trading intelligence  
-- Enables deterministic and explainable signal modeling  
-- Validates trading hypotheses with controlled confirmation  
-- Identifies recurring structural market patterns  
-- Establishes a scalable, orchestration-ready quantitative research framework  
-- Provides foundation for future ML, portfolio modeling, or production deployment  
+```text
+crypto-quant-platform/
+│
+├── dags/                         # Airflow DAG definitions
+│   ├── crypto_pipeline_dag.py
+│   ├── news_pipeline_dag.py
+│   └── ...
+│
+├── kafka/
+│   ├── producer_prices.py
+│   ├── producer_news.py
+│   ├── consumer_prices.py
+│   └── consumer_news.py
+│
+├── spark_jobs/
+│   ├── staging_to_fact.py
+│   ├── indicator_job.py
+│   ├── metric_job.py
+│   ├── prediction_engine.py
+│   ├── backtest_engine.py
+│   └── fp_growth_job.py
+│
+├── indicators/
+│   ├── momentum.py
+│   ├── trend_filter.py
+│   ├── trend_strength.py
+│   ├── volatility.py
+│   └── volume.py
+│
+├── sql/
+│   ├── dim_tables.sql
+│   ├── fact_tables.sql
+│   └── metric_definitions.sql
+│
+├── app/
+│   └── app.py
+│
+├── config/
+│   └── config.py
+│
+├── requirements.txt
+└── README.md
