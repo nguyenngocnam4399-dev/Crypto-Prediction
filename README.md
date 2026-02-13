@@ -244,7 +244,18 @@ Services are configured and managed directly at the OS level without containeriz
 
 ---
 
+# 11️⃣ Conclusion
+
+This project establishes a deterministic quantitative research infrastructure grounded in structured data modeling and strict leakage control.
+
+By decoupling ingestion, signal construction, confirmation, and evaluation into independent layers, the system enforces reproducibility, auditability, and disciplined experimentation. Every stage of the signal lifecycle is persisted at explicit grain within a fact-driven warehouse, reducing ambiguity and preventing implicit assumptions.
+
+The framework is designed as a foundation rather than a single strategy implementation. Its architecture allows controlled expansion toward portfolio-level allocation models, transaction cost integration, regime-adaptive signal weighting, and hybrid deterministic–statistical extensions, while preserving transparency and structural integrity.
+
+The primary objective is not short-term optimization, but the construction of a research environment where edge can be measured, validated, and stress-tested under controlled conditions.
 # 📂 Project Structure
+
+---
 
 ```text
 crypto-quant-platform/
@@ -289,14 +300,4 @@ crypto-quant-platform/
 ├── requirements.txt
 └── README.md
 
----
 
-# 11️⃣ Conclusion
-
-This project establishes a deterministic quantitative research infrastructure grounded in structured data modeling and strict leakage control.
-
-By decoupling ingestion, signal construction, confirmation, and evaluation into independent layers, the system enforces reproducibility, auditability, and disciplined experimentation. Every stage of the signal lifecycle is persisted at explicit grain within a fact-driven warehouse, reducing ambiguity and preventing implicit assumptions.
-
-The framework is designed as a foundation rather than a single strategy implementation. Its architecture allows controlled expansion toward portfolio-level allocation models, transaction cost integration, regime-adaptive signal weighting, and hybrid deterministic–statistical extensions, while preserving transparency and structural integrity.
-
-The primary objective is not short-term optimization, but the construction of a research environment where edge can be measured, validated, and stress-tested under controlled conditions.
