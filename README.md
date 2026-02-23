@@ -80,6 +80,8 @@ Việc kết hợp kỹ thuật và sentiment giúp tăng độ toàn diện c�
 
 # 4️⃣ Thiết Kế Kiến Trúc Hệ Thống
 
+![System Architecture](images/System_Architecture.png)
+
 Luồng tổng thể:
 
 Market / News → Kafka → Spark → Data Warehouse → Metric Engine → Prediction → Backtesting → Analytics → Web
@@ -97,6 +99,25 @@ Market / News → Kafka → Spark → Data Warehouse → Metric Engine → Predi
 - Tính toán indicator phân tán  
 - Xử lý sentiment batch lớn  
 
+## 🗄️ Data Warehouse Schema
+
+![Warehouse Schema](images/warehouse_schema.png)
+
+Thiết kế Dim–Fact:
+
+Dimension:
+- dim_symbol  
+- dim_interval  
+- dim_indicator_type  
+- dim_metric  
+
+Fact:
+- fact_kline  
+- fact_indicator  
+- fact_metric_value  
+- fact_prediction  
+- fact_prediction_result
+
 ## 4.3 Vì Sao Thiết Kế Theo Dim–Fact?
 
 Dimension chứa thông tin mô tả.  
@@ -109,6 +130,12 @@ Thiết kế này:
 - Tránh redundancy  
 - Dễ audit  
 - Phù hợp chuẩn Data Warehouse  
+
+Nguyên tắc:
+- Explicit grain  
+- Idempotent ETL  
+- Không overwrite lịch sử  
+- Truy vết vòng đời tín hiệu
 
 ---
 
