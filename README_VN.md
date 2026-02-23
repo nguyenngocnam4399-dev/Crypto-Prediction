@@ -1,362 +1,333 @@
-1️⃣ Problem Statement – Nhu Cầu Thực Tế
+# 🚀 Deterministic Quantitative Crypto Research Platform  
+### Real-Time Crypto Prediction & Analytics System (BTC • ETH • BNB)
+
+---
+
+# 1️⃣ Problem Statement – Nhu Cầu Thực Tế
 
 Trong những năm gần đây, tài sản số (Digital Assets) đã trở thành một phần quan trọng của thị trường tài chính toàn cầu.
 
-Số lượng nhà đầu tư quan tâm đến BTC, ETH, BNB ngày càng lớn
-
-Thanh khoản thị trường cao
-
-Biến động mạnh nhưng có tính chu kỳ
-
-Nhà nước đang dần tiến tới quản lý và cấp phép tài sản số
+- Số lượng nhà đầu tư quan tâm đến BTC, ETH, BNB ngày càng lớn  
+- Thanh khoản thị trường cao  
+- Biến động mạnh nhưng có tính chu kỳ  
+- Nhà nước đang dần tiến tới quản lý và cấp phép tài sản số  
 
 Tuy nhiên, phần lớn nhà đầu tư vẫn:
 
-Ra quyết định dựa trên cảm tính
+- Ra quyết định dựa trên cảm tính  
+- Không có hệ thống định lượng  
+- Không đánh giá được tính ổn định dài hạn của chiến lược  
 
-Không có hệ thống định lượng
+---
 
-Không đánh giá được tính ổn định dài hạn của chiến lược
-
-🎯 Mục tiêu dự án
+## 🎯 Mục tiêu dự án
 
 Xây dựng một hệ thống:
 
-Thu thập dữ liệu crypto real-time
-
-Chuẩn hóa và lưu trữ theo mô hình Data Warehouse
-
-Ứng dụng mô hình Statistical & Machine Learning
-
-Đánh giá hiệu suất bằng backtest
-
-Phân tích độ ổn định chiến lược
-
-Trình diễn trực quan cho end-user
+- Thu thập dữ liệu crypto real-time
+- Chuẩn hóa và lưu trữ theo mô hình Data Warehouse
+- Ứng dụng mô hình Statistical & Machine Learning
+- Đánh giá hiệu suất bằng backtest
+- Phân tích độ ổn định chiến lược
+- Trình diễn trực quan cho end-user
 
 Hệ thống hướng tới:
 
-Cung cấp góc nhìn định lượng có độ chính xác tương đối tốt
-Có thể áp dụng cho cá nhân và mở rộng cho end-user.
+> Cung cấp góc nhìn định lượng có độ chính xác tương đối tốt  
+> Có thể áp dụng cho cá nhân và mở rộng cho end-user.
 
-2️⃣ Solution Overview – Giải Quyết Bài Toán
+---
+
+# 2️⃣ Solution Overview – Giải Quyết Bài Toán
 
 Hệ thống được xây dựng theo flow:
 
-Thu thập dữ liệu real-time từ Binance (WebSocket / API)
+1. Thu thập dữ liệu real-time từ Binance (WebSocket / API)  
+2. Streaming qua Kafka  
+3. Spark xử lý & tính toán indicator  
+4. Lưu trữ vào Data Warehouse (Dim-Fact)  
+5. Xây dựng Metric & Scoring  
+6. Prediction Engine  
+7. Backtest & Confirmation  
+8. FP-Growth Pattern Mining  
+9. Flask API + Dashboard Visualization  
 
-Streaming qua Kafka
+---
 
-Spark xử lý & tính toán indicator
+# 🏗 System Architecture
 
-Lưu trữ vào Data Warehouse (Dim-Fact)
-
-Xây dựng Metric & Scoring
-
-Prediction Engine
-
-Backtest & Confirmation
-
-FP-Growth Pattern Mining
-
-Flask API + Dashboard Visualization
-
-🏗 System Architecture
 ![System Architecture](images/System_Architecture.png)
-3️⃣ Data Collection & Data Dictionary
-📊 Market Data (OHLCV)
+
+---
+
+# 3️⃣ Data Collection & Data Dictionary
+
+## 📊 Market Data (OHLCV)
 
 Thu thập:
 
-Open
+- Open  
+- High  
+- Low  
+- Close  
+- Volume  
+- Timestamp  
 
-High
+### Vì sao cần?
 
-Low
+| Dữ liệu | Ý nghĩa tài chính |
+|----------|------------------|
+| Open/Close | Giá đóng mở kỳ |
+| High/Low | Biên độ biến động |
+| Volume | Sức mạnh thị trường |
+| Time | Chu kỳ & trend |
 
-Close
+---
 
-Volume
+## 📰 News Sentiment
 
-Timestamp
+- Thu thập tin tức crypto  
+- Tính sentiment score  
+- Weight theo tag & độ tin cậy  
 
-Vì sao cần?
-Dữ liệu	Ý nghĩa tài chính
-Open/Close	Giá đóng mở kỳ
-High/Low	Biên độ biến động
-Volume	Sức mạnh thị trường
-Time	Chu kỳ & trend
-📰 News Sentiment
+### Vì sao cần?
 
-Thu thập tin tức crypto
+- Crypto phản ứng mạnh với tin tức  
+- Sentiment ảnh hưởng ngắn hạn tới price  
 
-Tính sentiment score
+---
 
-Weight theo tag & độ tin cậy
+# 🗄 Data Warehouse Design
 
-Vì sao cần?
+![Warehouse Schema](images/warehouse_schema_crypto.png)
 
-Crypto phản ứng mạnh với tin tức
-
-Sentiment ảnh hưởng ngắn hạn tới price
-
-🗄 Data Warehouse Design
-![Warehouse Schema](images/warehouse_schema.png)
 ![News Warehouse Schema](images/warehouse_schema_news.png)
-🎯 Vì sao thiết kế Dim-Fact?
 
-Chuẩn hóa dữ liệu
+---
 
-Truy vết lịch sử
+## 🎯 Vì sao thiết kế Dim-Fact?
 
-Tối ưu query
+- Chuẩn hóa dữ liệu  
+- Truy vết lịch sử  
+- Tối ưu query  
+- Idempotent write  
+- Phù hợp DW concept  
 
-Idempotent write
+---
 
-Phù hợp DW concept
+# 4️⃣ Data Engineering Layer
 
-4️⃣ Data Engineering Layer
-🔄 Kafka Streaming
+## 🔄 Kafka Streaming
 
-Real-time ingestion
+- Real-time ingestion  
+- Decoupled producer & consumer  
 
-Decoupled producer & consumer
+## ⚡ Spark Processing
 
-⚡ Spark Processing
+- Indicator calculation  
+- Metric scoring  
+- Prediction logic  
+- Backtest confirmation  
 
-Indicator calculation
+## 🕒 Airflow Scheduling
 
-Metric scoring
+- Batch job orchestration  
+- Retry logic  
+- Monitoring  
+- Idempotent pipeline  
 
-Prediction logic
+---
 
-Backtest confirmation
+# 5️⃣ Modeling & Statistical Design
 
-🕒 Airflow Scheduling
+## 📈 Indicator Layer
 
-Batch job orchestration
+- RSI  
+- MACD  
+- EMA  
+- Bollinger Bands  
+- ADX  
+- VWAP  
+- ATR  
+- OBV  
 
-Retry logic
+---
 
-Monitoring
+## 🧮 Metric & Scoring Engine
 
-Idempotent pipeline
+Market Score =  
+Trend + Momentum + Volume + Volatility  
 
-5️⃣ Modeling & Statistical Design
-📈 Indicator Layer
-
-RSI
-
-MACD
-
-EMA
-
-Bollinger Bands
-
-ADX
-
-VWAP
-
-ATR
-
-OBV
-
-🧮 Metric & Scoring Engine
-
-Market Score =
-Trend + Momentum + Volume + Volatility
-
-Confidence Score =
-Market Score / Max Score
+Confidence Score =  
+Market Score / Max Score  
 
 No-Trade Guard:
 
-Conflict detection
+- Conflict detection  
+- Weak edge filter  
+- Over-confidence filter  
 
-Weak edge filter
+---
 
-Over-confidence filter
+## 🔁 Backtest & Confirmation
 
-🔁 Backtest & Confirmation
+- Take Profit / Stop Loss  
+- Lookahead window  
+- Win / Loss classification  
+- PnL calculation  
+- Survivability metric  
 
-Take Profit / Stop Loss
+---
 
-Lookahead window
+# 6️⃣ Performance Analytics
 
-Win / Loss classification
+## 📊 Equity Curve & Drawdown
 
-PnL calculation
-
-Survivability metric
-
-6️⃣ Performance Analytics
-📊 Equity Curve & Drawdown
 ![Equity Curve](images/equity_curve.png)
 
-Đánh giá tăng trưởng vốn
+- Đánh giá tăng trưởng vốn  
+- Đo độ sụt giảm tối đa  
+- Kiểm tra survivability  
 
-Đo độ sụt giảm tối đa
+---
 
-Kiểm tra survivability
+## 📉 Rolling Expectancy
 
-📉 Rolling Expectancy
 ![Rolling Expectancy](images/rolling_expectancy.png)
 
-Kiểm tra edge theo thời gian
+- Kiểm tra edge theo thời gian  
+- Nếu expectancy < 0 → mất lợi thế  
 
-Nếu expectancy < 0 → mất lợi thế
+---
 
-📈 Model Stability (Rolling Win-rate)
+## 📈 Rolling Win-rate
+
 ![Rolling Winrate](images/rolling_winrate.png)
 
-Độ ổn định theo thời gian
+- Độ ổn định theo thời gian  
+- Kiểm tra variance  
 
-Kiểm tra variance
+---
 
-📡 Market Regime Radar
+## 📡 Market Regime Radar
+
 ![Market Regime](images/market_regime.png)
 
-Dùng làm:
+- Context filter  
+- Không phải tín hiệu trực tiếp  
 
-Context filter
+---
 
-Không phải tín hiệu trực tiếp
+## 📉 Price Regression Analysis
 
-📉 Price Regression Analysis
 ![Price Regression](images/price_regression.png)
 
-Phân tích độ dốc
+- Phân tích độ dốc  
+- Kiểm tra bias xu hướng  
 
-Kiểm tra bias xu hướng
+---
 
-📊 Rule Strength (FP-Growth)
+## 📊 Rule Strength (FP-Growth)
+
 ![Rule Strength](images/rule_strength.png)
-7️⃣ FP-Growth Pattern Mining
-Vì sao dùng FP-Growth?
 
-Tìm pattern WIN trades
+---
 
-Phân tích feature co-occurrence
+# 7️⃣ FP-Growth Pattern Mining
 
-Không dự đoán trực tiếp
+### Vì sao dùng FP-Growth?
 
-Hỗ trợ strategy refinement
+- Tìm pattern WIN trades  
+- Phân tích feature co-occurrence  
+- Không dự đoán trực tiếp  
+- Hỗ trợ strategy refinement  
 
-Metrics:
+### Metrics:
 
-Support
+- Support  
+- Confidence  
+- Lift  
 
-Confidence
+---
 
-Lift
-
-8️⃣ End-User Value
+# 8️⃣ End-User Value
 
 Hệ thống giúp end-user:
 
-Nhìn thấy prediction rõ ràng
+- Nhìn thấy prediction rõ ràng  
+- Hiểu mức độ confidence  
+- Đánh giá risk  
+- Kiểm tra stability  
+- Không phụ thuộc cảm tính  
 
-Hiểu mức độ confidence
+---
 
-Đánh giá risk
+# 9️⃣ Technical Highlights
 
-Kiểm tra stability
+- Kafka real-time streaming  
+- Spark distributed processing  
+- Airflow orchestration  
+- MySQL Data Warehouse  
+- Dim-Fact modeling  
+- Idempotent pipeline  
+- Anti-duplicate insert  
+- Conflict detection logic  
+- Dual TP/SL dynamic  
+- FP-Growth ML integration  
+- Flask Reporting API  
 
-Không phụ thuộc cảm tính
+---
 
-9️⃣ Technical Highlights
+# 🔟 What I Gained (Gen Value)
 
-Kafka real-time streaming
+## 📊 Financial Domain
 
-Spark distributed processing
+- Hiểu OHLC structure  
+- Momentum & volatility  
+- Risk management  
+- Take Profit / Stop Loss  
+- Edge concept  
 
-Airflow orchestration
+## 🏗 Data Engineering
 
-MySQL Data Warehouse
+- Kafka  
+- Spark  
+- Airflow  
+- JDBC optimization  
+- Monitoring & scheduling  
 
-Dim-Fact modeling
+## 🗄 Data Warehouse
 
-Idempotent pipeline
+- Dim-Fact modeling  
+- Star schema  
+- Query optimization  
+- Historical tracking  
 
-Anti-duplicate insert
+## 📈 Data Analytics & Data Science
 
-Conflict detection logic
+- Metric design  
+- Scoring system  
+- Backtesting methodology  
+- Expectancy calculation  
+- FP-Growth modeling  
+- Regression analysis  
 
-Dual TP/SL dynamic
+## 🎨 UI / UX
 
-FP-Growth ML integration
+- Dashboard design  
+- Performance communication  
+- Visualization clarity  
 
-Flask Reporting API
+---
 
-🔟 What I Gained (Gen Value)
-📊 Financial Domain
-
-Hiểu OHLC structure
-
-Momentum & volatility
-
-Risk management
-
-Take Profit / Stop Loss
-
-Edge concept
-
-🏗 Data Engineering
-
-Kafka
-
-Spark
-
-Airflow
-
-JDBC optimization
-
-Monitoring & scheduling
-
-🗄 Data Warehouse
-
-Dim-Fact modeling
-
-Star schema
-
-Query optimization
-
-Historical tracking
-
-📈 Data Analytics & Data Science
-
-Metric design
-
-Scoring system
-
-Backtesting methodology
-
-Expectancy calculation
-
-FP-Growth modeling
-
-Regression analysis
-
-🎨 UI / UX
-
-Dashboard design
-
-Performance communication
-
-Visualization clarity
-
-🔚 Conclusion
+# 🔚 Conclusion
 
 Dự án này không chỉ là một hệ thống dự đoán crypto.
 
 Nó là một nền tảng:
 
-Data Engineering chuẩn production
-
-Data Warehouse đúng concept
-
-Statistical modeling ứng dụng thực tế
-
-Analytics đầy đủ survivability & stability
-
-Có thể mở rộng cho end-user
+- Data Engineering chuẩn production  
+- Data Warehouse đúng concept  
+- Statistical modeling ứng dụng thực tế  
+- Analytics đầy đủ survivability & stability  
+- Có thể mở rộng cho end-user  
