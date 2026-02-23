@@ -101,7 +101,110 @@ Thiết kế đảm bảo:
 
 ---
 
-# 📊 3️⃣ Data Understanding (EDA) & Data Dictionary Reasoning
+# 🔍 3️⃣ Data Pipeline Architecture Breakdown
+
+## 1. Data Ingestion
+
+### Market Data
+- Kafka streams real-time OHLCV data  
+- Spark Streaming normalizes records  
+- Stored in `fact_kline`  
+
+### News Data
+- News crawled from crypto media sources  
+- Sent to Kafka topic  
+- Consumed and stored in `news_fact`  
+- Symbol mapping stored in `news_coin_fact`  
+
+Both streams remain independent and immutable.
+
+---
+
+## 2. Indicator Computation
+
+- Atomic indicators computed via Spark  
+- Stored in `fact_indicator`  
+- Partitioned by symbol and interval  
+- Fully recomputable from raw kline  
+
+---
+
+## 3. News Sentiment Processing
+
+News sentiment is modeled as a multi-layer fact pipeline:
+
+### Raw Layer — `news_fact`
+Grain: 1 row = 1 article  
+- title  
+- url (UNIQUE)  
+- sentiment_score  
+- created_date  
+- view_number  
+- tag_id  
+
+### Mapping Layer — `news_coin_fact`
+Grain: `(news_id, symbol_id)`  
+- symbol attribution  
+- confidence score  
+
+### Weighted Layer — `news_sentiment_weighted_fact`
+Grain: `(news_id, symbol_id)`  
+
+Includes:
+- raw_sentiment  
+- tag_weight  
+- confidence  
+- weighted_score  
+- final_score  
+- event_time  
+
+Constraints:
+- UNIQUE(news_id, symbol_id)  
+- Indexed for join optimization  
+
+### Aggregated Layer — `news_sentiment_agg_fact`
+Grain: `(symbol_id, window_start)`  
+
+- news_count  
+- sentiment_weighted  
+
+Aligned to trading interval resolution.
+
+---
+
+## 4. Metric Abstraction
+
+- Trading conditions defined in `dim_metric`  
+- Technical + sentiment metrics supported  
+- Evaluated into `fact_metric_value`  
+- Threshold, trend, cross, volatility logic  
+
+---
+
+## 5. Prediction Engine
+
+buy_score  = Σ(weighted BUY metrics)  
+sell_score = Σ(weighted SELL metrics)  
+
+edge = |buy_score − sell_score|  
+confidence = max(score) / MAX_SCORE  
+
+Stored in `fact_prediction`.
+
+Deterministic, explainable, leakage-safe.
+
+---
+
+## 6. Backtesting & Confirmation
+
+- Adaptive TP/SL  
+- Controlled lookahead  
+- Results stored in `fact_prediction_result`  
+- Strict separation from prediction  
+
+---
+
+# 📊 4️⃣ Data Understanding (EDA) & Data Dictionary Reasoning
 
 Việc thu thập dữ liệu trong hệ thống không chỉ mang tính kỹ thuật mà dựa trên cơ chế hình thành giá và hành vi thị trường crypto.
 
@@ -188,7 +291,7 @@ Sentiment được sử dụng để bổ sung yếu tố tâm lý vào hệ th�
 
 ---
 
-# 4️⃣ Kiến Trúc Data Warehouse
+# 5️⃣ Kiến Trúc Data Warehouse
 
 ## 🗄 Mô Hình Dim-Fact
 
@@ -226,7 +329,7 @@ Sentiment được sử dụng để bổ sung yếu tố tâm lý vào hệ th�
 
 ---
 
-# 5️⃣ Framework Modeling & Scoring
+# 6️⃣ Framework Modeling & Scoring
 
 ## 🧮 Market Scoring
 
@@ -250,7 +353,7 @@ Mục tiêu:
 
 ---
 
-# 6️⃣ Backtest & Quản Trị Rủi Ro
+# 7️⃣ Backtest & Quản Trị Rủi Ro
 
 Backtest đánh giá:
 
@@ -270,7 +373,7 @@ Backtest đánh giá:
 
 ---
 
-# 7️⃣ Phân Tích Hiệu Suất
+# 8️⃣ Phân Tích Hiệu Suất
 
 ## 📈 Equity Curve & Drawdown
 
@@ -335,7 +438,7 @@ Sử dụng FP-Growth để:
 
 ---
 
-# 8️⃣ Yếu Tố Production
+# 9️⃣ Yếu Tố Production
 
 Hệ thống được thiết kế để:
 
@@ -349,7 +452,7 @@ Hệ thống được thiết kế để:
 
 ---
 
-# 9️⃣ Tech Stack
+# 🔟 Tech Stack
 
 | Layer | Công nghệ |
 |--------|------------|
