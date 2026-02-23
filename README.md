@@ -1,7 +1,6 @@
 # 🚀 Deterministic Quantitative Trading Research Platform  
-### Production-Grade Crypto Data Pipeline with Structured Edge Validation  
+### Hệ Thống Phân Tích & Dự Đoán Tài Sản Số Dựa Trên Dữ Liệu Thời Gian Thực  
 
-### Data Engineering Capstone Project  
 **Author:** Nguyễn Ngọc Nam  
 **Mentor:** Phạm Long Vân - Data Manager  
 **Location:** Ho Chi Minh City, Vietnam — 2025  
@@ -10,9 +9,23 @@
 
 # 1️⃣ Introduction
 
-This project designs a structured, scalable, and empirically testable quantitative trading research framework. It standardizes the full lifecycle of a trading signal—from real-time market ingestion, technical indicator computation, news sentiment modeling, metric abstraction, to deterministic prediction and independent confirmation—while strictly separating processing layers to prevent data leakage.
-
-Instead of relying on opaque machine learning models, the system implements a weighted, metric-driven scoring engine based on the concept of **edge**, allowing transparent evaluation of directional dominance between buyers and sellers. The architecture follows a fact-driven Data Warehouse design with explicit grain definition, idempotent ETL processes, and full signal traceability. Structural pattern mining (FP-Growth) is applied to validated trades to assess edge sustainability. The framework prioritizes transparency, reproducibility, and experimental rigor over short-term optimization.
+Trong bối cảnh tài sản số (Crypto Assets) ngày càng phát triển mạnh mẽ, đặc biệt là các đồng có tính thanh khoản cao như BTC, ETH, BNB, số lượng nhà đầu tư cá nhân và tổ chức tham gia thị trường ngày càng tăng.
+Song song với đó, xu hướng quản lý và cấp phép tài sản số tại nhiều quốc gia (bao gồm Việt Nam trong tương lai gần) khiến nhu cầu:
+Phân tích dữ liệu thị trường chuyên sâu
+Đánh giá rủi ro đầu tư
+Dự đoán xu hướng giá
+Kiểm định tính ổn định của tín hiệu giao dịch
+trở nên cấp thiết.
+Tuy nhiên, phần lớn nhà đầu tư hiện nay:
+Dựa vào cảm tính hoặc tin tức rời rạc
+Thiếu hệ thống phân tích dữ liệu có cấu trúc
+Không có cơ chế kiểm chứng tín hiệu trước khi ra quyết định
+Vì vậy, dự án này được xây dựng nhằm:
+Xây dựng một hệ thống phân tích và dự đoán tài sản số dựa trên dữ liệu thời gian thực, có khả năng hỗ trợ quyết định đầu tư với độ chính xác tương đối tốt, áp dụng được cho cả người phát triển và người dùng cuối (end-user).
+Hệ thống tập trung vào các tài sản có giá trị và tính ổn định cao:
+BTC
+ETH
+BNB
 
 ---
 
