@@ -276,3 +276,9 @@ Quá trình thực hiện giúp nâng cao hiểu biết về domain tài chính,
 Quan trọng hơn, dự án hình thành tư duy thiết kế có kiểm soát, có kiểm chứng và có khả năng tạo giá trị cho end-user. Thay vì xử lý dữ liệu rời rạc, hệ thống được xây dựng như một nền tảng có thể mở rộng, audit và cải tiến liên tục.
 
 Đây là bước chuyển từ tư duy lập trình sang tư duy kiến trúc phục vụ thực tiễn.
+
+---
+
+## License
+This system is for **educational and research purposes only**.  
+© 2026 Nguyễn Ngọc Nam — Data Engineering Project.
