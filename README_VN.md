@@ -1,193 +1,198 @@
-# 🚀 Deterministic Quantitative Crypto Research Platform  
-### Real-Time Crypto Prediction & Analytics System (BTC • ETH • BNB)
+# 🚀 Production-Grade Quantitative Crypto Research Platform
+
+> Real-time Data Engineering Pipeline & Quantitative Trading Research System  
+> Focus Assets: BTC • ETH • BNB
 
 ---
 
-# 1️⃣ Problem Statement – Nhu Cầu Thực Tế
+## 📌 Executive Summary
 
-Trong những năm gần đây, tài sản số (Digital Assets) đã trở thành một phần quan trọng của thị trường tài chính toàn cầu.
+This project is a **production-oriented data engineering and quantitative research platform** designed to:
 
-- Số lượng nhà đầu tư quan tâm đến BTC, ETH, BNB ngày càng lớn  
-- Thanh khoản thị trường cao  
-- Biến động mạnh nhưng có tính chu kỳ  
-- Nhà nước đang dần tiến tới quản lý và cấp phép tài sản số  
+- Ingest real-time cryptocurrency market data
+- Standardize and warehouse structured financial data
+- Generate deterministic trading signals
+- Backtest and evaluate performance stability
+- Extract statistically significant trading patterns
+- Deliver analytics through a reporting dashboard
 
-Tuy nhiên, phần lớn nhà đầu tư vẫn:
-
-- Ra quyết định dựa trên cảm tính  
-- Không có hệ thống định lượng  
-- Không đánh giá được tính ổn định dài hạn của chiến lược  
+The system is engineered with **scalability, idempotency, fault tolerance, and analytical traceability** in mind.
 
 ---
 
-## 🎯 Mục tiêu dự án
+# 1️⃣ Business Context & Motivation
 
-Xây dựng một hệ thống:
+Digital assets are becoming a regulated and institutionalized financial class.  
+As liquidity and participation increase, decision-making must shift from intuition to quantitative frameworks.
 
-- Thu thập dữ liệu crypto real-time
-- Chuẩn hóa và lưu trữ theo mô hình Data Warehouse
-- Ứng dụng mô hình Statistical & Machine Learning
-- Đánh giá hiệu suất bằng backtest
-- Phân tích độ ổn định chiến lược
-- Trình diễn trực quan cho end-user
+Key challenges:
 
-Hệ thống hướng tới:
+- High market volatility
+- Noise-driven sentiment cycles
+- Lack of structured retail-level analytics
+- Absence of reproducible trading logic
 
-> Cung cấp góc nhìn định lượng có độ chính xác tương đối tốt  
-> Có thể áp dụng cho cá nhân và mở rộng cho end-user.
+This platform addresses those challenges by:
 
----
-
-# 2️⃣ Solution Overview – Giải Quyết Bài Toán
-
-Hệ thống được xây dựng theo flow:
-
-1. Thu thập dữ liệu real-time từ Binance (WebSocket / API)  
-2. Streaming qua Kafka  
-3. Spark xử lý & tính toán indicator  
-4. Lưu trữ vào Data Warehouse (Dim-Fact)  
-5. Xây dựng Metric & Scoring  
-6. Prediction Engine  
-7. Backtest & Confirmation  
-8. FP-Growth Pattern Mining  
-9. Flask API + Dashboard Visualization  
+- Building a deterministic scoring engine
+- Applying statistical validation (backtest, expectancy, regression)
+- Mining repeatable winning patterns
+- Delivering explainable signal outputs
 
 ---
 
-# 🏗 System Architecture
+# 2️⃣ High-Level Architecture
+
+## System Architecture
 
 ![System Architecture](images/System_Architecture.png)
 
----
+The architecture follows a layered design:
 
-# 3️⃣ Data Collection & Data Dictionary
+### 🔹 Data Ingestion Layer
+- Binance WebSocket / API
+- News Crawlers
+- Kafka Streaming
 
-## 📊 Market Data (OHLCV)
+### 🔹 Processing Layer
+- Spark (Batch + Stream)
+- Indicator Computation Engine
+- Metric & Scoring Engine
+- Backtest Engine
+- FP-Growth Pattern Mining
 
-Thu thập:
+### 🔹 Storage Layer
+- MySQL Data Warehouse (Dim-Fact Modeling)
 
-- Open  
-- High  
-- Low  
-- Close  
-- Volume  
-- Timestamp  
+### 🔹 Orchestration Layer
+- Airflow DAG scheduling
+- Retry & failure handling
+- Idempotent execution
 
-### Vì sao cần?
-
-| Dữ liệu | Ý nghĩa tài chính |
-|----------|------------------|
-| Open/Close | Giá đóng mở kỳ |
-| High/Low | Biên độ biến động |
-| Volume | Sức mạnh thị trường |
-| Time | Chu kỳ & trend |
-
----
-
-## 📰 News Sentiment
-
-- Thu thập tin tức crypto  
-- Tính sentiment score  
-- Weight theo tag & độ tin cậy  
-
-### Vì sao cần?
-
-- Crypto phản ứng mạnh với tin tức  
-- Sentiment ảnh hưởng ngắn hạn tới price  
+### 🔹 Presentation Layer
+- Flask API
+- Analytics Dashboard
 
 ---
 
-# 🗄 Data Warehouse Design
+# 3️⃣ Data Engineering Design
+
+## 🔄 Real-Time Ingestion
+
+- Kafka decouples producer & consumer
+- Enables replay & horizontal scaling
+- Handles streaming volatility bursts
+
+## ⚡ Distributed Processing
+
+Apache Spark is used for:
+
+- Indicator calculation (RSI, MACD, EMA, BB, ADX, VWAP, ATR, OBV)
+- Metric evaluation
+- Deterministic signal scoring
+- Backtest confirmation logic
+- Pattern mining preparation
+
+Processing design ensures:
+
+- Partition-aware aggregation
+- Idempotent writes
+- Anti-duplicate insertion logic
+- Symbol-isolated computation
+
+---
+
+# 4️⃣ Data Warehouse Architecture
+
+## Dim-Fact Modeling
 
 ![Warehouse Schema](images/warehouse_schema_crypto.png)
 
 ![News Warehouse Schema](images/warehouse_schema_news.png)
 
----
+### Dimension Tables
+- `dim_symbol`
+- `dim_interval`
+- `dim_indicator_type`
+- `dim_metric`
+- `tag_dim`
 
-## 🎯 Vì sao thiết kế Dim-Fact?
-
-- Chuẩn hóa dữ liệu  
-- Truy vết lịch sử  
-- Tối ưu query  
-- Idempotent write  
-- Phù hợp DW concept  
-
----
-
-# 4️⃣ Data Engineering Layer
-
-## 🔄 Kafka Streaming
-
-- Real-time ingestion  
-- Decoupled producer & consumer  
-
-## ⚡ Spark Processing
-
-- Indicator calculation  
-- Metric scoring  
-- Prediction logic  
-- Backtest confirmation  
-
-## 🕒 Airflow Scheduling
-
-- Batch job orchestration  
-- Retry logic  
-- Monitoring  
-- Idempotent pipeline  
+### Fact Tables
+- `fact_kline`
+- `fact_indicator`
+- `fact_metric_value`
+- `fact_prediction`
+- `fact_prediction_result`
+- `news_sentiment_weighted_fact`
+- `fp_growth_win_patterns`
+- `fp_growth_win_rules`
 
 ---
 
-# 5️⃣ Modeling & Statistical Design
+## Why Dim-Fact?
 
-## 📈 Indicator Layer
-
-- RSI  
-- MACD  
-- EMA  
-- Bollinger Bands  
-- ADX  
-- VWAP  
-- ATR  
-- OBV  
+- Historical traceability
+- Query performance optimization
+- Clean separation of context vs events
+- Scalable metric expansion
+- Compatible with DW best practices
 
 ---
 
-## 🧮 Metric & Scoring Engine
+# 5️⃣ Signal Modeling Framework
+
+## 🧮 Deterministic Market Scoring
 
 Market Score =  
-Trend + Momentum + Volume + Volatility  
+Trend + Momentum + Volume + Volatility
 
 Confidence Score =  
-Market Score / Max Score  
+Market Score / Max Score
 
-No-Trade Guard:
+### Guard Mechanisms
 
-- Conflict detection  
-- Weak edge filter  
-- Over-confidence filter  
+- Conflict Detection
+- Weak Edge Filter
+- Confidence Band Filter
+- No-Trade Flag Logic
 
----
+The design prevents:
 
-## 🔁 Backtest & Confirmation
-
-- Take Profit / Stop Loss  
-- Lookahead window  
-- Win / Loss classification  
-- PnL calculation  
-- Survivability metric  
+- Overtrading
+- High-variance regime breakdown
+- False positives during squeeze conditions
 
 ---
 
-# 6️⃣ Performance Analytics
+# 6️⃣ Backtest & Risk Modeling
 
-## 📊 Equity Curve & Drawdown
+Backtest Engine evaluates:
+
+- Dynamic TP/SL logic
+- Lookahead window evaluation
+- Win/Loss classification
+- PnL normalization
+- Rolling expectancy
+- Regime-dependent performance
+
+This ensures:
+
+- Survivability validation
+- Edge persistence testing
+- Overfitting detection
+
+---
+
+# 7️⃣ Advanced Analytics Layer
+
+## 📈 Equity Curve & Drawdown
 
 ![Equity Curve](images/equity_curve.png)
 
-- Đánh giá tăng trưởng vốn  
-- Đo độ sụt giảm tối đa  
-- Kiểm tra survivability  
+Measures:
+- Capital growth
+- Maximum drawdown
+- Risk-adjusted survivability
 
 ---
 
@@ -195,17 +200,19 @@ No-Trade Guard:
 
 ![Rolling Expectancy](images/rolling_expectancy.png)
 
-- Kiểm tra edge theo thời gian  
-- Nếu expectancy < 0 → mất lợi thế  
+Tracks:
+- Edge stability over time
+- Degradation detection
 
 ---
 
-## 📈 Rolling Win-rate
+## 📊 Rolling Win Rate
 
 ![Rolling Winrate](images/rolling_winrate.png)
 
-- Độ ổn định theo thời gian  
-- Kiểm tra variance  
+Used for:
+- Stability validation
+- Regime sensitivity detection
 
 ---
 
@@ -213,121 +220,114 @@ No-Trade Guard:
 
 ![Market Regime](images/market_regime.png)
 
-- Context filter  
-- Không phải tín hiệu trực tiếp  
+Contextual visualization of:
+- Trend intensity
+- Volatility state
+- Momentum alignment
 
 ---
 
-## 📉 Price Regression Analysis
+## 📉 Price Regression
 
 ![Price Regression](images/price_regression.png)
 
-- Phân tích độ dốc  
-- Kiểm tra bias xu hướng  
+Evaluates:
+- Structural bias
+- Slope persistence
+- Mean reversion behavior
 
 ---
 
-## 📊 Rule Strength (FP-Growth)
+## 📊 Association Rule Mining (FP-Growth)
 
 ![Rule Strength](images/rule_strength.png)
 
----
+FP-Growth is used to:
 
-# 7️⃣ FP-Growth Pattern Mining
+- Discover recurring winning combinations
+- Quantify rule strength (Support, Confidence, Lift)
+- Improve deterministic metric design
 
-### Vì sao dùng FP-Growth?
-
-- Tìm pattern WIN trades  
-- Phân tích feature co-occurrence  
-- Không dự đoán trực tiếp  
-- Hỗ trợ strategy refinement  
-
-### Metrics:
-
-- Support  
-- Confidence  
-- Lift  
+This supports strategy refinement through pattern validation.
 
 ---
 
-# 8️⃣ End-User Value
+# 8️⃣ Reliability & Production Considerations
 
-Hệ thống giúp end-user:
+- Idempotent JDBC writes
+- Left-anti join duplication prevention
+- Config-driven metric activation
+- Airflow retry & scheduling control
+- Partition-aware Spark execution
+- Symbol-isolated processing
 
-- Nhìn thấy prediction rõ ràng  
-- Hiểu mức độ confidence  
-- Đánh giá risk  
-- Kiểm tra stability  
-- Không phụ thuộc cảm tính  
+The system is designed to be:
 
----
-
-# 9️⃣ Technical Highlights
-
-- Kafka real-time streaming  
-- Spark distributed processing  
-- Airflow orchestration  
-- MySQL Data Warehouse  
-- Dim-Fact modeling  
-- Idempotent pipeline  
-- Anti-duplicate insert  
-- Conflict detection logic  
-- Dual TP/SL dynamic  
-- FP-Growth ML integration  
-- Flask Reporting API  
+- Re-runnable
+- Recoverable
+- Extensible
+- Debuggable
 
 ---
 
-# 🔟 What I Gained (Gen Value)
+# 9️⃣ Technical Stack
 
-## 📊 Financial Domain
-
-- Hiểu OHLC structure  
-- Momentum & volatility  
-- Risk management  
-- Take Profit / Stop Loss  
-- Edge concept  
-
-## 🏗 Data Engineering
-
-- Kafka  
-- Spark  
-- Airflow  
-- JDBC optimization  
-- Monitoring & scheduling  
-
-## 🗄 Data Warehouse
-
-- Dim-Fact modeling  
-- Star schema  
-- Query optimization  
-- Historical tracking  
-
-## 📈 Data Analytics & Data Science
-
-- Metric design  
-- Scoring system  
-- Backtesting methodology  
-- Expectancy calculation  
-- FP-Growth modeling  
-- Regression analysis  
-
-## 🎨 UI / UX
-
-- Dashboard design  
-- Performance communication  
-- Visualization clarity  
+| Layer | Technology |
+|-------|------------|
+| Streaming | Kafka |
+| Processing | Apache Spark |
+| Orchestration | Airflow |
+| Storage | MySQL |
+| API | Flask |
+| ML Pattern Mining | Spark ML (FP-Growth) |
+| Visualization | Custom Dashboard |
 
 ---
 
-# 🔚 Conclusion
+# 🔟 Skills & Value Gained
 
-Dự án này không chỉ là một hệ thống dự đoán crypto.
+## Financial Domain
+- Market microstructure understanding
+- Momentum & volatility regimes
+- Risk management design
+- Edge quantification
 
-Nó là một nền tảng:
+## Data Engineering
+- Distributed processing (Spark)
+- Streaming architecture (Kafka)
+- Workflow orchestration (Airflow)
+- Idempotent pipeline design
+- Data warehouse modeling
 
-- Data Engineering chuẩn production  
-- Data Warehouse đúng concept  
-- Statistical modeling ứng dụng thực tế  
-- Analytics đầy đủ survivability & stability  
-- Có thể mở rộng cho end-user  
+## Data Analytics & ML
+- Feature engineering
+- Deterministic scoring systems
+- Backtest validation
+- Expectancy modeling
+- Association rule mining
+- Regression analysis
+
+## System Design
+- Scalable architecture
+- Failure recovery design
+- Production-grade scheduling
+- Observability mindset
+
+---
+
+# 🏁 Conclusion
+
+This project is not just a crypto prediction tool.
+
+It is a **production-oriented quantitative research infrastructure** demonstrating:
+
+- Real-time streaming ingestion
+- Distributed computation
+- Structured data warehousing
+- Deterministic trading signal modeling
+- Statistical validation
+- Pattern mining integration
+- End-user analytics delivery
+
+It reflects a complete data lifecycle —  
+from raw event ingestion to actionable quantitative insight.
