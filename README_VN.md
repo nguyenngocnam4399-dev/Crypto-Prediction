@@ -379,9 +379,10 @@ Backtest đánh giá:
 
 ![Equity Curve](images/equity_curve.png)
 
-- Tăng trưởng vốn
-- Maximum drawdown
-- Đánh giá rủi ro hệ thống
+Mục tiêu: Đánh giá khả năng tăng trưởng vốn và kiểm soát rủi ro.
+- Đường equity thể hiện tăng trưởng lũy kế sau mỗi giao dịch.
+- Drawdown giúp đo mức suy giảm tối đa.
+- Dùng để kiểm tra tính bền vững dài hạn của chiến lược.
 
 ---
 
@@ -389,8 +390,10 @@ Backtest đánh giá:
 
 ![Rolling Expectancy](images/rolling_expectancy.png)
 
-- Kiểm tra edge theo thời gian
-- Phát hiện giai đoạn mất lợi thế
+Mục tiêu: Kiểm tra edge theo thời gian.
+- Expectancy dương ổn định → chiến lược có lợi thế thống kê.
+- Giảm liên tục → dấu hiệu regime change.
+- Giúp phát hiện giai đoạn chiến lược mất hiệu quả.
 
 ---
 
@@ -398,8 +401,10 @@ Backtest đánh giá:
 
 ![Rolling Winrate](images/rolling_winrate.png)
 
-- Đánh giá độ ổn định mô hình
-- Phân tích độ nhạy regime
+Mục tiêu: Đánh giá tính ổn định của tín hiệu.
+- Winrate không nên quá biến động.
+- Nếu dao động mạnh → chiến lược phụ thuộc regime.
+- Dùng để đánh giá robustness.
 
 ---
 
@@ -407,11 +412,9 @@ Backtest đánh giá:
 
 ![Market Regime](images/market_regime.png)
 
-Hiển thị:
-
-- Trend strength
-- Momentum alignment
-- Volatility state
+Mục tiêu: Hiểu trạng thái thị trường tại thời điểm tín hiệu.
+- Phân tích trend strength, volatility, momentum alignment.
+- Giúp giải thích tại sao tín hiệu hoạt động tốt hoặc kém hiệu quả.
 
 ---
 
@@ -419,9 +422,9 @@ Hiển thị:
 
 ![Price Regression](images/price_regression.png)
 
-- Độ dốc xu hướng
-- Bias thị trường
-- Mean reversion behavior
+Mục tiêu: Đánh giá bias xu hướng và hành vi mean reversion.
+- Độ dốc regression phản ánh xu hướng trung hạn.
+- So sánh deviation để nhận diện vùng quá mua/quá bán.
 
 ---
 
@@ -429,12 +432,11 @@ Hiển thị:
 
 ![Rule Strength](images/rule_strength.png)
 
-Sử dụng FP-Growth để:
+Mục tiêu: Khai phá pattern giao dịch thắng.
 
-- Tìm pattern giao dịch thắng lặp lại
-- Đo strength bằng Support, Confidence, Lift
-- Hỗ trợ tối ưu chiến lược
-- Cải thiện hệ thống scoring
+- Support đo tần suất xuất hiện.
+- Confidence đo xác suất điều kiện → kết quả.
+- Lift đo mức cải thiện so với ngẫu nhiên.
 
 ---
 
