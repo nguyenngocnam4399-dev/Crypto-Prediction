@@ -43,7 +43,7 @@ Link demo: https://ngocnam-de-project.hocnghiepvu.com
 
 ## 🏗 System Architecture
 
-![System Architecture](images/System_Architecture.png)
+![System Architecture](images/System_Architecture_1.png)
 
 Hệ thống gồm 5 tầng:
 
