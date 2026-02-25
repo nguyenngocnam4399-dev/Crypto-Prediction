@@ -389,7 +389,7 @@ The system is designed to:
 
 ---
 
-# 🔟 Generated Value
+# 🔟 Gained Value
 
 Designing and implementing this system enhanced not only domain expertise but also technical capability and system-level thinking.
 
