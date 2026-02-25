@@ -73,30 +73,65 @@ Hệ thống gồm 5 tầng:
 
 ---
 
-# 5️⃣ Kiến Trúc Data Warehouse
+# 2️⃣ Kiến Trúc Data Warehouse
 
-## 🗄 Mô Hình Dim-Fact
+Sau khi xác định kiến trúc tổng thể, bước quan trọng nhất là thiết kế Data Warehouse để toàn bộ dữ liệu được tổ chức có cấu trúc và có khả năng mở rộng.
+
+## 🧱 2.1 Mô Hình Dim–Fact
+
+### 🎯 Nguyên tắc thiết kế
+
+- Xác định rõ **Data Grain** cho từng Fact
+- Tách biệt Context (Dimension) và Event (Fact)
+- Đảm bảo khả năng mở rộng khi thêm tài sản hoặc metric
+- Tối ưu truy vấn phân tích theo thời gian
+
+---
+
+## 📌 2.2 Thiết Kế Fact Chính
 
 ![Warehouse Schema](images/warehouse_schema_crypto.png)
 
+### `fact_kline`
+- Grain: (symbol_id, interval_id, open_time)
+- Lưu dữ liệu OHLCV chuẩn hóa
+
+### `fact_indicator`
+- Grain: (symbol_id, interval_id, indicator_type_id, open_time)
+- Lưu giá trị indicator atomic
+
+### `fact_metric_value`
+- Grain: (symbol_id, metric_id, open_time)
+- Lưu kết quả đánh giá điều kiện giao dịch
+
+### `fact_prediction`
+- Grain: (symbol_id, interval_id, signal_time, signal_type)
+- Lưu tín hiệu BUY/SELL/SIDEWAY
+
+### `fact_prediction_result`
+- Tách riêng khỏi prediction để đảm bảo:
+  - Không rò rỉ dữ liệu
+  - Backtest leakage-safe
+  - Tách biệt tầng signal và tầng validation
+
+---
+
+## 📰 2.3 Pipeline Sentiment Nhiều Lớp
+
 ![News Warehouse Schema](images/warehouse_schema_news.png)
 
-### Dimension Tables
-- dim_symbol
-- dim_interval
-- dim_indicator_type
-- dim_metric
-- tag_dim
+Sentiment được thiết kế thành 4 lớp:
 
-### Fact Tables
-- fact_kline
-- fact_indicator
-- fact_metric_value
-- fact_prediction
-- fact_prediction_result
-- news_sentiment_weighted_fact
-- fp_growth_win_patterns
-- fp_growth_win_rules
+1. `news_fact` (Raw Article)
+2. `news_coin_fact` (Mapping Symbol)
+3. `news_sentiment_weighted_fact` (Weighted Score)
+4. `news_sentiment_agg_fact` (Aggregation theo window)
+
+Thiết kế này đảm bảo:
+
+- Có thể truy vết từ aggregated → raw
+- Có thể tái tính toán khi thay đổi trọng số
+- Tách biệt trách nhiệm xử lý
 
 ---
 
