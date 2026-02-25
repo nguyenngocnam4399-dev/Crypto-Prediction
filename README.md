@@ -169,20 +169,18 @@ Thiết kế này đảm bảo:
 
 ## 4.3 Metric Abstraction
 
-## 📘 dim_metric — BTC (2H Interval)
-
-| metric_id | metric_code                  | metric_name                 | description                                   | indicator_type_id | window_size | window_unit | threshold_start | threshold_end | direction     | metric_weight | is_active | created_at           |
-|------------|-----------------------------|-----------------------------|-----------------------------------------------|------------------|-------------|-------------|-----------------|---------------|---------------|--------------|-----------|----------------------|
-| 1  | BTC_ADX_STRONG_2H          | BTC ADX Strong              | ADX ≥ 20 → xác nhận có trend thật            | 13 | 2 | HOUR | 20.0000 | —       | ABOVE       | 1.00 | 1 | 2026-02-10 05:52:14 |
-| 2  | BTC_BUY_MACD_BULL_2H       | BTC MACD Bullish            | MACD > Signal                                | 3  | 2 | HOUR | —        | —       | CROSS_UP    | 1.30 | 1 | 2026-02-10 05:52:14 |
-| 3  | BTC_BUY_RSI_BULL_2H        | BTC RSI Bull Zone           | RSI > 50 → bullish regime                    | 1  | 2 | HOUR | 50.0000  | —       | ABOVE       | 1.00 | 1 | 2026-02-10 05:52:14 |
-| 4  | BTC_BUY_VOL_OK_2H          | BTC Volatility OK           | BB_WIDTH không quá thấp → tránh squeeze      | 16 | 2 | HOUR | 0.0300   | —       | ABOVE       | 0.80 | 1 | 2026-02-10 05:52:14 |
-| 5  | BTC_SELL_TREND_DOWN_2H     | BTC Trend Down (EMA200)     | EMA200 dốc xuống → ưu tiên SELL              | 10 | 2 | HOUR | —        | —       | TREND_DOWN  | 1.20 | 1 | 2026-02-10 05:52:28 |
-| 6  | BTC_SELL_ADX_WEAK_2H       | BTC ADX Weak                | ADX < 20 → trend suy yếu                     | 13 | 2 | HOUR | —        | 20.0000 | BELOW       | 1.00 | 1 | 2026-02-10 05:52:28 |
-| 7  | BTC_SELL_MACD_BEAR_2H      | BTC MACD Bearish            | MACD < Signal                                | 3  | 2 | HOUR | —        | —       | CROSS_DOWN  | 1.30 | 1 | 2026-02-10 05:52:28 |
-| 8  | BTC_SELL_MACD_HIST_DOWN_2H | BTC MACD Histogram Falling  | MACD_HIST giảm → momentum suy yếu            | 5  | 2 | HOUR | —        | 0.0000  | TREND_DOWN  | 1.20 | 1 | 2026-02-10 05:52:28 |
-| 9  | BTC_SELL_RSI_BEAR_2H       | BTC RSI Bear Zone           | RSI < 45 → bearish regime                    | 1  | 2 | HOUR | —        | 45.0000 | BELOW       | 1.00 | 1 | 2026-02-10 05:52:28 |
-| 10 | BTC_SELL_FAIL_BB_UP_2H     | BTC Fail At Upper BB        | Giá chạm BB_UP rồi thất bại                  | 17 | 2 | HOUR | —        | —       | REJECT      | 0.90 | 1 | 2026-02-10 05:52:28 |
+| metric_code | Logic | Direction | Weight |
+|-------------|--------|-----------|--------|
+| BTC_ADX_STRONG_2H | ADX ≥ 20 | ABOVE | 1.00 |
+| BTC_BUY_MACD_BULL_2H | MACD > Signal | CROSS_UP | 1.30 |
+| BTC_BUY_RSI_BULL_2H | RSI > 50 | ABOVE | 1.00 |
+| BTC_BUY_VOL_OK_2H | BB_WIDTH ≥ 0.03 | ABOVE | 0.80 |
+| BTC_SELL_TREND_DOWN_2H | EMA200 dốc xuống | TREND_DOWN | 1.20 |
+| BTC_SELL_ADX_WEAK_2H | ADX < 20 | BELOW | 1.00 |
+| BTC_SELL_MACD_BEAR_2H | MACD < Signal | CROSS_DOWN | 1.30 |
+| BTC_SELL_MACD_HIST_DOWN_2H | MACD_HIST giảm | TREND_DOWN | 1.20 |
+| BTC_SELL_RSI_BEAR_2H | RSI < 45 | BELOW | 1.00 |
+| BTC_SELL_FAIL_BB_UP_2H | Giá reject BB_UP | REJECT | 0.90 |
        
 - `dim_metric` định nghĩa điều kiện giao dịch
 - Hỗ trợ:
