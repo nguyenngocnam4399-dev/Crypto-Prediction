@@ -1,5 +1,4 @@
-# 🚀 Crypto Quantitative Research & Real-Time Data Platform (Production-Grade)  
-### Digital Asset Analytics & Prediction System Based on Real-Time Data  
+# 🚀 Crypto Quantitative Research & Real-Time Data Platform
 
 **Author:** Nguyễn Ngọc Nam  
 **Mentor:** Phạm Long Vân – Data Manager  
