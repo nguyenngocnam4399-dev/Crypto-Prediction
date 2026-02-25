@@ -73,6 +73,44 @@ Hệ thống gồm 5 tầng:
 
 ---
 
+# 5️⃣ Kiến Trúc Data Warehouse
+
+## 🗄 Mô Hình Dim-Fact
+
+![Warehouse Schema](images/warehouse_schema_crypto.png)
+
+![News Warehouse Schema](images/warehouse_schema_news.png)
+
+### Dimension Tables
+- dim_symbol
+- dim_interval
+- dim_indicator_type
+- dim_metric
+- tag_dim
+
+### Fact Tables
+- fact_kline
+- fact_indicator
+- fact_metric_value
+- fact_prediction
+- fact_prediction_result
+- news_sentiment_weighted_fact
+- fp_growth_win_patterns
+- fp_growth_win_rules
+
+---
+
+## Vì Sao Chọn Dim-Fact?
+
+- Tách biệt context và event
+- Tối ưu truy vấn phân tích
+- Lưu trữ lịch sử rõ ràng
+- Dễ mở rộng metric mới
+- Phù hợp chuẩn Data Warehouse
+- Hỗ trợ phân tích theo thời gian và theo tài sản
+
+---
+
 # 2️⃣ Thiết Kế Data Engineering
 
 ## 🔄 Ingestion Real-Time
@@ -288,44 +326,6 @@ Sentiment được sử dụng để bổ sung yếu tố tâm lý vào hệ th�
 - Tối ưu trọng số scoring
 - Giảm overfitting
 - Cải thiện độ ổn định dài hạn
-
----
-
-# 5️⃣ Kiến Trúc Data Warehouse
-
-## 🗄 Mô Hình Dim-Fact
-
-![Warehouse Schema](images/warehouse_schema_crypto.png)
-
-![News Warehouse Schema](images/warehouse_schema_news.png)
-
-### Dimension Tables
-- dim_symbol
-- dim_interval
-- dim_indicator_type
-- dim_metric
-- tag_dim
-
-### Fact Tables
-- fact_kline
-- fact_indicator
-- fact_metric_value
-- fact_prediction
-- fact_prediction_result
-- news_sentiment_weighted_fact
-- fp_growth_win_patterns
-- fp_growth_win_rules
-
----
-
-## Vì Sao Chọn Dim-Fact?
-
-- Tách biệt context và event
-- Tối ưu truy vấn phân tích
-- Lưu trữ lịch sử rõ ràng
-- Dễ mở rộng metric mới
-- Phù hợp chuẩn Data Warehouse
-- Hỗ trợ phân tích theo thời gian và theo tài sản
 
 ---
 
